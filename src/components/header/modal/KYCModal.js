@@ -1,7 +1,34 @@
-import React from 'react'
+import { doKYC } from "@/services/request";
+import React, { useState } from "react";
+import { useSelector } from "react-redux";
+import Spinner from "../spinner/Spinner";
+import { Router, useRouter } from "next/router";
 
-export default function KYCModal({show, close}) {
+export default function KYCModal({ show, close }) {
+  const { user } = useSelector((state) => state.store);
+  const [loading, setLoading] = useState(false);
+  const router  = useRouter()
 
+
+//   async function kyc() {
+//     setLoading(true);
+//     if(!user.email){
+//         return
+//     }
+//     const response = await doKYC(user?.email);
+//     const data = await response.json();
+
+//     if (response.status === 200) {
+//         console.log(data)
+//     }
+//     setLoading(false);
+//   }
+
+//   console.log(user)
+
+function profileUpdtate(){
+    router.push("/profile")
+}
   return (
     <>
       {/* Open the modal using document.getElementById('ID').showModal() method */}
@@ -12,7 +39,7 @@ export default function KYCModal({show, close}) {
               <div>
                 <h1 className="text-[#8C1D18] font-bold">Attention</h1>
                 <h2 className="text-[#8C1D18] text-[13px]">
-                  Please head over to your profile and <br /> get verified to
+                  Please head over to your profile, complete your profile, do your KYC and   get verified to
                   use website
                 </h2>
               </div>
@@ -40,7 +67,11 @@ export default function KYCModal({show, close}) {
               </div>
             </div>
 
-            <button className=' btn mb-5 normal-case  btn-sm text-xs'>Do KYC</button>
+            <button
+              className=" btn mb-5 normal-case  btn-sm text-xs"
+              onClick={profileUpdtate}>
+              start
+            </button>
           </div>
         </div>
 

@@ -2,8 +2,10 @@ import React from 'react'
 import ActiveLink from "@/components/header/layout/ActiveLink";
 import { MdDashboardCustomize } from "react-icons/md";
 import { RiMenu4Fill } from "react-icons/ri";
+import { useSelector } from 'react-redux';
 
 function DashboardDrawer(){
+  
   return (
     <div className="drawer">
       <input id="my-drawer-1" type="checkbox" className="drawer-toggle" />
@@ -15,32 +17,39 @@ function DashboardDrawer(){
           className="drawer-overlay"></label>
         <ul className="menu p-4  flex flex-col justify-between  h-[100dvh]  bg-[#4F378B]  text-white">
           <div>
-            <ActiveLink href={"/"}>
+            <ActiveLink href={"/dashboard"}>
               <MdDashboardCustomize />
               Dashboard
             </ActiveLink>
             <ActiveLink
-              href="/profile.html"
+              href="/profile"
               className="block py-2 px-3 lg:text-black text-[#ffffff] md:p-0"
               aria-current="page">
               <i className="fa-regular fa-circle-user lg:text-black text-[#ffffff]"></i>{" "}
               My Profile
             </ActiveLink>
+            <ActiveLink
+              href="/businessprofile"
+              className="block py-2 px-3 lg:text-black text-[#ffffff] md:p-0"
+              aria-current="page">
+              <i className="fa-regular fa-circle-user lg:text-black text-[#ffffff]"></i>{" "}
+              My Business
+            </ActiveLink>
 
             <ActiveLink
-              href="/know your customer.html"
+              href="/invoice"
               className="block py-2 px-3 lg:text-black text-[#ffffff]">
               <i className="fa-solid fa-arrow-up-right-from-square lg:text-black text-[#ffffff]"></i>{" "}
               Invoice
             </ActiveLink>
             <ActiveLink
-              href="/know your customer.html"
+              href="/clients"
               className="block py-2 px-3 lg:text-black text-[#ffffff]">
               <i className="fa-solid fa-arrow-up-right-from-square lg:text-black text-[#ffffff]"></i>{" "}
               Clients
             </ActiveLink>
             <ActiveLink
-              href="/know your customer.html"
+              href=""
               className="block py-2 px-3 lg:text-black text-[#ffffff]">
               <i className="fa-solid fa-arrow-up-right-from-square lg:text-black text-[#ffffff]"></i>{" "}
               Complete KYC
@@ -63,6 +72,10 @@ function DashboardDrawer(){
 }
 
 export default function LoginHeader() {
+    const { user, transactionFilter, transactions, notifications } =
+      useSelector((state) => state.store);
+
+  
   return (
     <>
       <DashboardDrawer />
@@ -74,11 +87,11 @@ export default function LoginHeader() {
             </div>
             <div className="flex items-center md:order-2  md:space-x-0 rtl:space-x-reverse">
               <a
-                href="/notification.html"
+                
                 className="bg-[#4F378B1A] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg  text-xs  py-2 text-center">
                 <i
                   className="fa-regular fa-bell fa-xl"
-                  style={{ color: "#0c254f" }}></i>
+                  style={{ color: "#0c254f" }}>{notifications && notifications.length}</i>
               </a>
               <div
                 data-collapse-toggle="navbar-sticky"

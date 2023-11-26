@@ -4,11 +4,11 @@ export default function Document() {
   return (
     <Html lang="en">
       <Head />
-      <link
+      {/* <link
         rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
-      />
-       <script src="https://cdn.tailwindcss.com"></script>
+      /> */}
+       {/* <script src="https://cdn.tailwindcss.com"></script> */}
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
     <script src="https://kit.fontawesome.com/4e3895d11d.js" crossorigin="anonymous"></script>

@@ -1,6 +1,6 @@
 import Applayout from "@/components/header/layout/Applayout";
 import Spinner from "@/components/header/spinner/Spinner";
-import { getUser } from "@/redux/storeSlice";
+import {  setUser } from "@/redux/storeSlice";
 import { login } from "@/services/request";
 import Cookies from "js-cookie";
 import Link from "next/link";
@@ -36,10 +36,12 @@ export default function Login() {
 
         const data = await response.json();
 
-        if (response.status === 200) {
-          dispatch(getUser(data.findUser));
+       
 
-          Cookies.set("_commercefy");
+        if (response.status === 200) {
+          dispatch(setUser(data.findUser));
+
+          Cookies.set("_commercefy", data.token);
 
           router.push("/dashboard");
         }

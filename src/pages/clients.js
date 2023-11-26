@@ -1,11 +1,25 @@
 import Applayout from '@/components/header/layout/Applayout'
-import React, { useState } from 'react'
+import { getOwnerClients, searchClient, setCurrentClient } from '@/redux/storeSlice';
+import { geClients, getCookie } from '@/services/request';
+import { data } from 'autoprefixer';
+import { useRouter } from 'next/router';
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux';
 
-function Clientscard(){
+function Clientscard({client}){
       const [show, setShow] = useState(false);
 
+      const dispatch  = useDispatch()
+      const router  = useRouter()
       function showModal() {
         setShow((prev) => !prev);
+      }
+
+      function  handleClientInvioce(id){
+dispatch(setCurrentClient(id));
+
+    router.push("/generate-invoice");
+
       }
     return (
       <div className="px-7  rounded-md   " onClick={showModal}>
@@ -15,7 +29,7 @@ function Clientscard(){
               href="#!"
               id="dropdownButton1"
               className="text-black  hover:text-white text-sm flex items-center gap-[250px] ">
-              <div className=" hover:text-white ">Ali Chile</div>
+              <div className=" hover:text-white ">{client.name}</div>
               <div className="hover:text-white">
                 <i
                   className="fa-solid fa-chevron-right fa-sm"
@@ -27,11 +41,10 @@ function Clientscard(){
             <div
               id="dropdownContent1"
               className=" absolute top-10 right-0 bg-white w-[300px] z-10 justify-center border border-gray-300 p-2 rounded-md shadow-md">
-              <h1 className="text-center">Ali Chile</h1>
+              <h1 className="text-center">{client.name}</h1>
               <h1 className="bg-[#25252580] border mt-2"></h1>
-              <div className="bg-[#FFF7FD] w-fit flex justify-center items-center mx-auto mt-2 p-2 rounded-md">
-                <a
-                  href="/generate invoice.html"
+              <div className="bg-[#FFF7FD] w-fit  cursor-pointer flex justify-center items-center mx-auto mt-2 p-2 rounded-md">
+                <span  onClick={handleClientInvioce.bind(this, client.id)}
                   className="text-[#252525] lg:text-2xl text-xl font-bold">
                   <div className="flex justify-center text-[#141B34] mt-2">
                     <svg
@@ -57,15 +70,15 @@ function Clientscard(){
                   <h1 className="text-center text-base">
                     Generate New Invoice
                   </h1>
-                </a>
+                </span>
               </div>
               <div>
                 <div className="flex gap-2 justify-center items-center mt-4">
                   <h1 className="hover:bg-[#4F378B1A] w-fit p-2 rounded-md">
-                    <a href="#">Cleared</a>
+                    <a ></a>
                   </h1>
                   <h1 className="hover:bg-[#4F378B1A] w-fit p-2 rounded-md">
-                    <a href="#">Pending</a>
+                    <a ></a>
                   </h1>
                 </div>
               </div>
@@ -76,8 +89,39 @@ function Clientscard(){
     );
 }
 export default function Clients() {
+
+  const dispatch  = useDispatch()
+    const { user, transactionFilter, transactions, ownerClients , client} = useSelector(
+      (state) => state.store
+    );
+
+    const  [ search , setSearch] =  useState("")
+  useEffect(()=>{
+const token  = getCookie()
+
+if(!token){
+  return
+}
+
+async function clients(){
+  const dataC = await geClients(token);
+  console.log(dataC)
+
+  dispatch(getOwnerClients(dataC.clients));
+
+}
+
+clients()
+
+  },[])
   
 
+  function handleInputChange(e){
+dispatch(searchClient(e.target.value));
+
+    setCurrentClient(e.target.value)
+  }
+  
     
   return (
     <Applayout>
@@ -86,12 +130,13 @@ export default function Clients() {
           <input
             type="text"
             placeholder="Search..."
+            onChange={handleInputChange}
             className="flex-1 p-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
           />
         </div>
-       <Clientscard/>
-
-     
+        { client &&
+           client.length > 0 &&
+           client.map((client) => <Clientscard  key={client.id} client={client}/>)}
       </div>
     </Applayout>
   );
