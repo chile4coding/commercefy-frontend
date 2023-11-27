@@ -14,7 +14,7 @@ const ActiveLink = ({ href, children }) => {
   return (
     <Link
       href={href}
-      className={`flex p-2  items-center gap-2   my-4  normal-case ${className}`}>
+      className={`flex p-2 link  no-underline items-center gap-2   my-4  normal-case ${className}`}>
       {children}
     </Link>
   );
