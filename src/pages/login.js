@@ -79,7 +79,7 @@ export default function Login() {
 
           Cookies.set("_commercefy", data.token);
 
-          router.push("/dashboard");
+          window.location.href = "/dashboard";
            setReg({
              ...reg,
              password: "",
