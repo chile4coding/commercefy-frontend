@@ -160,22 +160,22 @@ export default function Dashbooard() {
 
     getUserDetails();
 
-    socket.on(`${user?.id}transferNotification`, (message) => {
-      dispatch(getNotification(message));
-    });
-    socket.on(`${user?.id}client`, (message) => {
-      dispatch(getNotification(message));
-    });
-    socket.on(`${user?.id}kyc`, (message) => {
-      dispatch(getNotification(message));
-    });
+    // socket.on(`${user?.id}transferNotification`, (message) => {
+    //   dispatch(getNotification(message));
+    // });
+    // socket.on(`${user?.id}client`, (message) => {
+    //   dispatch(getNotification(message));
+    // });
+    // socket.on(`${user?.id}kyc`, (message) => {
+    //   dispatch(getNotification(message));
+    // });
 
-    return () => {
-      socket.off(`${user?.id}transferNotification`);
-      socket.off(`${user?.id}client`);
-      socket.off(`${user?.id}kyc`);
-    };
-  }, [notifications]);
+    // return () => {
+    //   socket.off(`${user?.id}transferNotification`);
+    //   socket.off(`${user?.id}client`);
+    //   socket.off(`${user?.id}kyc`);
+    // };
+  }, []);
 
   function toggleBalance() {
     setShowBalance((prev) => !prev);

@@ -2,11 +2,12 @@ import React, { useEffect, useState } from "react";
 import Header from "../header";
 import ActiveLink from "./ActiveLink";
 import LoginHeader from "../LoginHeader";
-import { getCookie } from "@/services/request";
+import { getCookie, socket } from "@/services/request";
 import Link from "next/link";
 import { ToastContainer, toast } from "react-toastify";
 import { useRouter } from "next/router";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { getNotification } from "@/redux/storeSlice";
 export default function Applayout({ children }) {
   const [token, setToken] = useState(null);
   const { user, transactionFilter, transactions } = useSelector(
@@ -14,20 +15,32 @@ export default function Applayout({ children }) {
   );
 
   const [checkRoute, setRoute  ] = useState(null)
-
+const dispatch  =  useDispatch()
  
   const router = useRouter();
   useEffect(() => {
     const token = getCookie();
     setToken(token);
 
-if(router.asPath === "/"){
-  setRoute(true)
-}
- 
+    if (router.asPath === "/") {
+      setRoute(true);
+    }
 
-    
-    
+    socket.on(`${user?.id}transferNotification`, (message) => {
+      dispatch(getNotification(message));
+    });
+    socket.on(`${user?.id}client`, (message) => {
+      dispatch(getNotification(message));
+    });
+    socket.on(`${user?.id}kyc`, (message) => {
+      dispatch(getNotification(message));
+    });
+
+    return () => {
+      socket.off(`${user?.id}transferNotification`);
+      socket.off(`${user?.id}client`);
+      socket.off(`${user?.id}kyc`);
+    };
   }, []);
 
   function invoice() {

@@ -146,7 +146,7 @@ function NavNext(e){
         <Modal />
         <div className="w-full max-w-md">
           <div className="max-w-md mx-auto  lg:p-0 p-3 text-right">
-            <span onClick={() => router.back()}>
+            <span className=' cursor-pointer' onClick={() => router.back()}>
               <i
                 className="fa-solid fa-chevron-left fa-sm"
                 style={{ color: "#000000;" }}></i>{" "}

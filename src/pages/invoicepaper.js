@@ -10,10 +10,10 @@ export default function Invoicepaper() {
     const router  = useRouter()
 
     useEffect(()=>{
-  socket.on(`${user?.id}transferNotification`, (message) => {
-    dispatch(getNotification(message.notification));
-  });
-    }, [socket])
+  // socket.on(`${user?.id}transferNotification`, (message) => {
+  //   dispatch(getNotification(message.notification));
+  // });
+    }, [])
     function handleNexNav(){
         router.push("/payment-link")
     }
@@ -26,12 +26,12 @@ export default function Invoicepaper() {
       <div class="flex items-center justify-center ">
         <div class="w-full max-w-md">
           <div class="max-w-md mx-auto   lg:p-0 p-3 text-right">
-            <a href="/generate invoice.html">
+            <span className=" cursor-pointer" onClick={() => router.back()}>
               <i
                 class="fa-solid fa-chevron-left fa-sm"
                 style={{ color: "#000000;" }}></i>{" "}
               Go back
-            </a>
+            </span>
           </div>
           <div class="bg-[#fefefe] p-5  rounded-md">
             <div>
@@ -55,18 +55,19 @@ export default function Invoicepaper() {
             </div>
             <div class="flex justify-between mt-3">
               <h1>
-                Invoice No: <span class="font-bold">{generatedInvoice.id}</span>
+                Invoice No:{" "}
+                <span class="font-bold">{generatedInvoice?.id}</span>
               </h1>
 
-              <span class="font-bold">{generatedInvoice.date}</span>
+              <span class="font-bold">{generatedInvoice?.date}</span>
             </div>
             <div class="flex gap-10 mt-3">
               <div>
                 <h1 class="font-bold">Invoice To:</h1>
-                <h1 class="font-bold">{generatedInvoice.name}</h1>
-                <h1 className=" mt-4">{generatedInvoice.address}</h1>
+                <h1 class="font-bold">{generatedInvoice?.name}</h1>
+                <h1 className=" mt-4">{generatedInvoice?.address}</h1>
 
-                <h2 class="font-bold">{generatedInvoice.phone}</h2>
+                <h2 class="font-bold">{generatedInvoice?.phone}</h2>
               </div>
               <div></div>
             </div>
@@ -78,14 +79,14 @@ export default function Invoicepaper() {
               <h2>Total</h2>
             </div>
 
-            {generatedInvoice.items.map((item) => {
+            {generatedInvoice?.items.map((item) => {
               return (
                 <div class="flex gap-8 mt-5">
                   <h1>1</h1>
                   <h2>{item.name}</h2>
                   <h2>₦{item.price}</h2>
                   <h2>{item.qty}</h2>
-                  <h2>₦{item.subTotal}</h2>
+                  <h2>₦{item?.subTotal}</h2>
                 </div>
               );
             })}
@@ -99,7 +100,7 @@ export default function Invoicepaper() {
                 </div>
                 <div>
                   <h1 class="font-semibold mt-5">
-                    ₦{generatedInvoice.subTotal}
+                    ₦{generatedInvoice?.subTotal}
                   </h1>
                   <p>₦{generatedInvoice?.tax}</p>
                   <p>₦{generatedInvoice?.amountPaid}</p>
