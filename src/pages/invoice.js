@@ -87,7 +87,7 @@ function InvoiceTable({invoice}){
                   </svg>
                 )}
               </td>
-              <td>₦{item?.amountPaid.toFixed(2)}</td>
+              <td>₦{item?.amountPaid?.toFixed(2)}</td>
             </tr>
           );
         })}

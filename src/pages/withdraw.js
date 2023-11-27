@@ -292,10 +292,10 @@ setAmountPin({...amountPin, loading:false})
             <span
               onClick={withdrawFund}
               class=" cursor-pointer text-[#FEFEFE] bg-[#4F378B] px-24 py-3 rounded-md">
-              Submit {amountPin.loading && <Spinner />}
+              Submit {amountPin?.loading && <Spinner />}
             </span>
           </div>
-          {!user.is_pin_enabled && (
+          {!user?.is_pin_enabled && (
             <div className=" flex justify-center my-4 ">
               <span className=" cursor-pointer" onClick={showEnablePin}>
                 {" "}

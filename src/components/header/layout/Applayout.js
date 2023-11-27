@@ -27,21 +27,32 @@ const dispatch  =  useDispatch()
       setRoute(true);
     }
 
+    async  function getNotifcationOnload(){
+const data = await geNotifications(token);
+
+dispatch(getNotification(data?.notification));
+    }
+
+
+    getNotifcationOnload()
+
     async function getNotice(){
        const data = await geNotifications(token);
-       console.log("this is from notification db", data)
+
+       dispatch(getNotification(data?.notification));
+       
     }
     socket.on(`${user?.id}transferNotification`, async (message) => {
      await getNotice()
-      dispatch(getNotification(message));
+      // dispatch(getNotification(message));
     });
     socket.on(`${user?.id}client`, (message) => {
       getNotice()
-      dispatch(getNotification(message));
+      // dispatch(getNotification(message));
     });
     socket.on(`${user?.id}kyc`, (message) => {
       getNotice()
-      dispatch(getNotification(message));
+      // dispatch(getNotification(message));
     });
 
     return () => {

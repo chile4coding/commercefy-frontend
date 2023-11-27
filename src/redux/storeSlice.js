@@ -77,23 +77,27 @@ state.currentClient = action.payload
     },
      getNotification:(state, action)=>{
       
- let  notice  =  []
+//  let  notice  =  []
 
 
-if(state.notifications.length > 0){
-  notice = state.notifications
+// if(state.notifications.length > 0){
+//   notice = state.notifications
   
-}
+// }
 
-notice.push(action.payload)
+// notice.push(action.payload)
 
-      state.notifications =  notice
+//       state.notifications =  notice
+state.notifications = action.payload
       
     },
      clearNotification:(state, action)=>{
       
     state.notifications = []
       
+    },
+    filterOutNotice:(state, action)=>{
+state.notifications = state.notifications.filter((notice)=>notice.id !== action.payload)
     },
 
     searchClient:(state, action)=>{
@@ -121,6 +125,7 @@ export const {
   clearNotification,
   getTransactions,
   filterTransaction,
+   filterOutNotice,
   allTransaction,
   searchClient,
 } = storeSlice.actions;

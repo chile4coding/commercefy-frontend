@@ -295,11 +295,47 @@ const  data  = await response.json()
     return error;
   }}
 export async function geNotifications(token) {
-  console.log(token)
+ 
   try {
     const response = await fetch(`${base_url}/get_notifications`, {
       method: "GET",
 
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    
+const  data  = await response.json()
+    return data;
+  } catch (error) {
+    console.error(error);
+    return error;
+  }}
+export async function deleteNotifications(note, token) {
+ 
+  try {
+    const response = await fetch(`${base_url}/get_notifications`, {
+      method: "DELETE",
+      body:JSON.stringify({note}),
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    
+const  data  = await response.json()
+    return data;
+  } catch (error) {
+    console.error(error);
+    return error;
+  }}
+  
+export async function clearNotifications(token) {
+ 
+  try {
+    const response = await fetch(`${base_url}/clear_notifications`, {
+      method: "DELETE",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
