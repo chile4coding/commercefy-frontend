@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Spinner from "../spinner/Spinner";
-import { createClient, getCookie, getUser, socket } from "@/services/request";
-import { getNotification, setUser } from "@/redux/storeSlice";
+import { createClient, getCookie, getUser } from "@/services/request";
+import { setUser } from "@/redux/storeSlice";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -27,11 +27,7 @@ const dispatch = useDispatch()
   useEffect(()=>{
     const token  = getCookie()
     setToken(token)
-
-       socket.on(`${user?.id}client`, (message) => {
-         dispatch(getNotification(message));
-       });
-  }, [])
+  })
 
   function handleInputChange(e) {
     const { name, value } = e.target;
@@ -51,18 +47,16 @@ setMessage("");
 
     if(response.status === 200){
 
-         const res = await getUser(token);
-         const dat = await res.json();
+         const res = await getUser();
+         const data = await res.json();
 
-  
-         dispatch(setUser(dat.owner));
+         dispatch(setUser(data.owner));
 
-         setClient({...client, name:"", email:"", phone:"", address:""})
-      console.log(dat)
-      
+         router.reload()
     }
 
-
+    console.log(data)
+    console.log(client);
 
     setClient({ ...client, loading: false });
   }
@@ -71,11 +65,10 @@ setMessage("");
       {/* Open the modal using document.getElementById('ID').showModal() method */}
 
       <dialog id="my_modal_2" className="modal">
-      
         <div className=" max-w-sm modal-box">
           <h1 class=" text-lg font-bold  text-[#252525]">Add New Recipient</h1>
           <h1 className="text-[#4F378B] text-center">{message}</h1>
-          <form className=" card-body" onSubmit={createNewClient}>
+          <form className=" card-body" onClick={createNewClient}>
             <div class="">
               <label
                 for="nationality"

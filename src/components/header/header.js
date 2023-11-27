@@ -36,7 +36,7 @@ function Drawer() {
             </ActiveLink>
 
             <ActiveLink
-              href="/dashboard"
+              href="/profile.html"
               className="block py-2 px-3 lg:text-black text-[#ffffff] md:p-0"
               aria-current="page">
               <i className="fa-regular fa-circle-user lg:text-black text-[#ffffff]"></i>{" "}
@@ -72,7 +72,7 @@ export default function Header() {
           >
           <ul className="flex lg:items-center flex-col p-4 md:p-0 mt-4 font-medium rounded-lg md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 lg:bg-opacity-0 ] text-[#4F378B] ">
             <ActiveLink href={"/login"}>Sign in</ActiveLink>
-            <ActiveLink href={"/signup"}> Sign up</ActiveLink>
+            <ActiveLink href={"/sign-up"}> Sign up</ActiveLink>
             <ActiveLink href={"/about-us"}> About us</ActiveLink>
           </ul>
         </div>
