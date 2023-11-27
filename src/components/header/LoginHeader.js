@@ -7,6 +7,10 @@ import { setUser, allTransaction, getTransactions } from "@/redux/storeSlice";
 import { clearCookie, doKYC, getCookie } from "@/services/request";
 import { ToastContainer, toast } from "react-toastify";
 import { useRouter } from "next/router";
+import { GoArrowUpRight } from "react-icons/go";
+import { TiBusinessCard } from "react-icons/ti";
+import { IoPersonAddSharp } from "react-icons/io5";
+
 
 function DashboardDrawer() {
   const { user, transactionFilter, transactions, notifications } = useSelector(
@@ -160,8 +164,7 @@ function DashboardDrawer() {
               href="/businessprofile"
               className="block py-2 px-3 lg:text-black text-[#ffffff] md:p-0"
               aria-current="page">
-              <i className="fa-regular fa-circle-user lg:text-black text-[#ffffff]"></i>{" "}
-              My Business
+              <TiBusinessCard /> My Business
             </ActiveLink>
 
             <span
@@ -173,14 +176,14 @@ function DashboardDrawer() {
             <span
               onClick={clients}
               className=" cursor-pointer py-2 px-3 my-3 flex items-center gap-2 lg:text-black text-[#ffffff]">
-              <i className="fa-solid fa-arrow-up-right-from-square lg:text-black text-[#ffffff]"></i>{" "}
+              <IoPersonAddSharp />
               Clients
             </span>
             {!user?.KYC && (
               <span
                 onClick={kyc}
                 className="block py-2 px-3 lg:text-black text-[#ffffff]">
-                <i className="fa-solid fa-arrow-up-right-from-square lg:text-black text-[#ffffff]"></i>{" "}
+                <GoArrowUpRight />
                 Complete KYC
               </span>
             )}

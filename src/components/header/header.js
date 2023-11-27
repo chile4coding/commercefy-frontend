@@ -5,6 +5,8 @@ import {
   MdOutlineDashboardCustomize,
 } from "react-icons/md";
 import { RiMenu4Fill } from "react-icons/ri";
+import { LuLogIn } from "react-icons/lu";
+import { BiLogOutCircle } from "react-icons/bi";
 
 import { RiDashboard3Fill, RiDashboardLine } from "react-icons/ri";
 
@@ -24,18 +26,16 @@ function Drawer() {
               href="/login"
               className="block py-2 px-3 lg:text-black text-[#ffffff] md:p-0"
               aria-current="page">
-              <i className="fa-regular fa-circle-user lg:text-black text-[#ffffff]"></i>{" "}
+              <LuLogIn />
               Login
             </ActiveLink>
             <ActiveLink
               href="/signup"
               className="block py-2 px-3 lg:text-black text-[#ffffff] md:p-0"
               aria-current="page">
-              <i className="fa-regular fa-circle-user lg:text-black text-[#ffffff]"></i>{" "}
+              <BiLogOutCircle />
               Sign up
             </ActiveLink>
-          
-         
 
             <ActiveLink
               href="/dashboard"
