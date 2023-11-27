@@ -271,7 +271,7 @@ export default function Dashbooard() {
               <span
                 key={item?.id}
                 className={` cursor-pointer w-1/2 py-2 text-[#252525] text-center hover:bg-[#4F378B1A] lg:text-base text-sm font-medium ${
-                  item?.active ? "bg-[#e7e6e6]" : ""
+                  item?.active ? "bg-[#EDEAF3]" : ""
                 }`}
                 onClick={handleFilter.bind(this, item?.id)}>
                 {item.name}

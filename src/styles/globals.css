@@ -16,3 +16,6 @@
   padding: 0;
 }
 
+.active{
+  border-bottom: 2px solid #4F378B;
+}

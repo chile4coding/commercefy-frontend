@@ -12,7 +12,8 @@ const initialState = {
   transactions: {},
   transactionFilter: {},
   clientSearch:{},
-  notifications:[]
+  notifications:[],
+  invoiceFilter:{}
 };
 
 const storeSlice = createSlice({
@@ -58,6 +59,14 @@ state.currentClient = action.payload
       state.transactionFilter = state.transactions.filter((trans) =>
         trans.type.toLowerCase().includes(action.payload.toLowerCase())
       );
+    },
+    filterInvoice: (state, action) => {
+      state.invoiceFilter = state.invoices.filter((invoice) =>
+        invoice.status.toLowerCase().includes(action.payload.toLowerCase())
+      );
+    },
+    allInvoice: (state, action) => {
+      state.invoiceFilter = action.payload
     },
     allTransaction: (state, action) => {
       state.transactionFilter = action.payload
@@ -105,7 +114,9 @@ export const {
   initCurrentClient,
   getInvoice,
   getWithdrawal,
+  filterInvoice,
   getOwnerClients,
+   allInvoice,
   getNotification,
   clearNotification,
   getTransactions,

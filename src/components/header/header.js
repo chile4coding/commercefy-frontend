@@ -32,7 +32,7 @@ function Drawer() {
               className="block py-2 px-3 lg:text-black text-[#ffffff] md:p-0"
               aria-current="page">
               <i className="fa-regular fa-circle-user lg:text-black text-[#ffffff]"></i>{" "}
-              Sing up
+              Sign up
             </ActiveLink>
 
             <ActiveLink

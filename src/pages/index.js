@@ -8,6 +8,11 @@ import Applayout from "@/components/header/layout/Applayout";
 import { useDispatch, useSelector } from "react-redux";
 import { allTransaction, clearNotification, getInvoice, getNotification, getTransactions, setCurrentClient, setCurrentInvoice, setCurrentVisitor, setGenereatedInvoices, setUser } from "@/redux/storeSlice";
 import { ToastContainer } from "react-toastify";
+import Hero from "@/components/Hero";
+import SectionTwo from "@/components/SectionTwo";
+import SectionThree from "@/components/SectionThree";
+import SectionFour from "@/components/SectionFour";
+import Footer from "@/components/Footer";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -81,7 +86,13 @@ export default function Home() {
         pauseOnHover
         theme="colored"
       />
-      <p>whats up</p>
+    <div>
+      <Hero/>
+      <SectionTwo/>
+      <SectionThree/>
+      <SectionFour/>
+      <Footer/>
+    </div>
     </Applayout>
   );
 }

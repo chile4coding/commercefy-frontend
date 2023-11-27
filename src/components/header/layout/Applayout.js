@@ -13,10 +13,21 @@ export default function Applayout({ children }) {
     (state) => state.store
   );
 
+  const [checkRoute, setRoute  ] = useState(null)
+
+ 
   const router = useRouter();
   useEffect(() => {
     const token = getCookie();
     setToken(token);
+
+if(router.asPath === "/"){
+  setRoute(true)
+}
+ 
+
+    
+    
   }, []);
 
   function invoice() {
@@ -75,23 +86,25 @@ export default function Applayout({ children }) {
             pauseOnHover
             theme="colored"
           />
-          <div className="flex justify-between   mt-6">
-            <span className=" font-semibold w-1/2 py-2  text-[#252525] text-center hover:bg-[#4F378B1A] lg:text-base text-sm  rounded-md hover:bg-[#e3e2e5]">
-              <Link href={"/dashboard"}>Wallet</Link>
-            </span>
+          {!checkRoute && (
+            <div className="flex justify-between   mt-6">
+              <span className=" font-semibold w-1/2 py-2  text-[#252525] text-center hover:bg-[#4F378B1A] lg:text-base text-sm  rounded-md hover:bg-[#e3e2e5]">
+                <Link href={"/dashboard"}>Wallet</Link>
+              </span>
 
-            <span
-              onClick={invoice}
-              className=" cursor-pointer font-semibold w-1/2 py-2  text-[#252525] text-center hover:bg-[#4F378B1A] lg:text-base text-sm  rounded-md hover:bg-[#e3e2e5]">
-              <span>Invoice</span>
-            </span>
+              <span
+                onClick={invoice}
+                className=" cursor-pointer font-semibold w-1/2 py-2  text-[#252525] text-center hover:bg-[#4F378B1A] lg:text-base text-sm  rounded-md hover:bg-[#e3e2e5]">
+                <span>Invoice</span>
+              </span>
 
-            <span
-              onClick={clients}
-              className=" cursor-pointer font-semibold w-1/2 py-2  text-[#252525] text-center hover:bg-[#4F378B1A] lg:text-base text-sm  rounded-md hover:bg-[#e3e2e5]">
-              <span>My Clients</span>
-            </span>
-          </div>
+              <span
+                onClick={clients}
+                className=" cursor-pointer font-semibold w-1/2 py-2  text-[#252525] text-center hover:bg-[#4F378B1A] lg:text-base text-sm  rounded-md hover:bg-[#e3e2e5]">
+                <span>My Clients</span>
+              </span>
+            </div>
+          )}
         </div>
       ) : null}
       <div className="">{children}</div>

@@ -1,89 +1,87 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from "react";
 import ActiveLink from "@/components/header/layout/ActiveLink";
 import { MdDashboardCustomize } from "react-icons/md";
 import { RiMenu4Fill } from "react-icons/ri";
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from "react-redux";
 import { setUser, allTransaction, getTransactions } from "@/redux/storeSlice";
-import { clearCookie, doKYC, getCookie } from '@/services/request';
-import { ToastContainer, toast } from 'react-toastify';
-import { useRouter } from 'next/router';
+import { clearCookie, doKYC, getCookie } from "@/services/request";
+import { ToastContainer, toast } from "react-toastify";
+import { useRouter } from "next/router";
 
-function DashboardDrawer(){
+function DashboardDrawer() {
+  const { user, transactionFilter, transactions, notifications } = useSelector(
+    (state) => state.store
+  );
+  const dispatch = useDispatch();
+  const [token, setToken] = useState(null);
+  const router = useRouter();
 
-    const { user, transactionFilter, transactions, notifications } =
-      useSelector((state) => state.store);
-    const dispatch = useDispatch();
-    const [token, setToken] = useState(null);
-    const router  = useRouter()
+  useEffect(() => {
+    const token = getCookie();
+    setToken(token);
+  }, []);
 
-    useEffect(() => {
-      const token = getCookie();
-      setToken(token);
-    }, []);
+  function logout() {
+    clearCookie();
 
-  function logout(){
-    clearCookie()
-    
     dispatch(allTransaction([]));
     dispatch(getTransactions([]));
 
-    window.location.href = "/login"
+    window.location.href = "/login";
   }
 
-       async function kyc() {
-            const detail = {
-              email: user.email,
-              firstname: user.firstName,
-              lastname: user.lastName,
-            };
-if(Boolean(detail.email) && Boolean(detail.firstname) && Boolean(detail.lastname)){
-  
-  const response = await doKYC(detail, token);
-  const data = await response.json();
-  
-  if (response.status === 200) {
-    toast.success(data.message, {
-      position: "top-right",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "colored",
-    });
+  async function kyc() {
+    const detail = {
+      email: user.email,
+      firstname: user.firstName,
+      lastname: user.lastName,
+    };
+    if (
+      Boolean(detail.email) &&
+      Boolean(detail.firstname) &&
+      Boolean(detail.lastname)
+    ) {
+      const response = await doKYC(detail, token);
+      const data = await response.json();
 
-           window.location.href = data.session.redirectUrl;
+      if (response.status === 200) {
+        toast.success(data.message, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
 
-  } else {
-    toast.error(data.message, {
-      position: "top-right",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "colored",
-    });
+        window.location.href = data.session.redirectUrl;
+      } else {
+        toast.error(data.message, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+      }
+    } else {
+      toast.error("Complete Your profile first", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+    }
   }
-
-}else{
-  toast.error("Complete Your profile first", {
-    position: "top-right",
-    autoClose: 5000,
-    hideProgressBar: false,
-    closeOnClick: true,
-    pauseOnHover: true,
-    draggable: true,
-    progress: undefined,
-    theme: "colored",
-  });
-}
-
-
-       }
-
 
   function invoice() {
     if (!user?.KYC) {
@@ -124,8 +122,6 @@ if(Boolean(detail.email) && Boolean(detail.firstname) && Boolean(detail.lastname
     router.push("/clients");
   }
 
-
-  
   return (
     <div className="drawer">
       <ToastContainer
@@ -168,12 +164,14 @@ if(Boolean(detail.email) && Boolean(detail.firstname) && Boolean(detail.lastname
               My Business
             </ActiveLink>
 
-            <span  onClick={invoice}
+            <span
+              onClick={invoice}
               className=" cursor-pointer flex gap-2 items-center py-2 my-3 px-3 lg:text-black text-[#ffffff]">
               <i className="fa-solid fa-arrow-up-right-from-square lg:text-black text-[#ffffff]"></i>{" "}
               Invoice
             </span>
-            <span onClick={clients}
+            <span
+              onClick={clients}
               className=" cursor-pointer py-2 px-3 my-3 flex items-center gap-2 lg:text-black text-[#ffffff]">
               <i className="fa-solid fa-arrow-up-right-from-square lg:text-black text-[#ffffff]"></i>{" "}
               Clients
@@ -202,81 +200,80 @@ if(Boolean(detail.email) && Boolean(detail.firstname) && Boolean(detail.lastname
 }
 
 export default function LoginHeader() {
-    const { user, transactionFilter, transactions, notifications } =
-      useSelector((state) => state.store);
-      const dispatch  = useDispatch()
-      const  [token, setToken] = useState(null)
-      const router  = useRouter()
+  const { user, transactionFilter, transactions, notifications } = useSelector(
+    (state) => state.store
+  );
+  const dispatch = useDispatch();
+  const [token, setToken] = useState(null);
+  const router = useRouter();
 
-      useEffect(()=>{
-const token  =  getCookie()
-setToken(token)
-      },[])
+  useEffect(() => {
+    const token = getCookie();
+    setToken(token);
+  }, []);
 
-        function logout() {
-          clearCookie();
+  function logout() {
+    clearCookie();
 
-          // dispatch(setUser([]));
-          dispatch(allTransaction([]));
-          dispatch(getTransactions([]));
+    // dispatch(setUser([]));
+    dispatch(allTransaction([]));
+    dispatch(getTransactions([]));
 
-          window.location.href = "/login";
-        }
+    window.location.href = "/login";
+  }
 
-      async function kyc() {
-        const detail = {
-          email: user.email,
-          firstname: user.firstName,
-          lastname: user.lastName,
-        };
-        if (
-          Boolean(detail.email) &&
-          Boolean(detail.firstname) &&
-          Boolean(detail.lastname)
-        ) {
-          const response = await doKYC(detail, token);
-          const data = await response.json();
+  async function kyc() {
+    const detail = {
+      email: user.email,
+      firstname: user.firstName,
+      lastname: user.lastName,
+    };
+    if (
+      Boolean(detail.email) &&
+      Boolean(detail.firstname) &&
+      Boolean(detail.lastname)
+    ) {
+      const response = await doKYC(detail, token);
+      const data = await response.json();
 
-          if (response.status === 200) {
-            toast.success(data.message, {
-              position: "top-right",
-              autoClose: 5000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "colored",
-            });
-                   window.location.href = data.session.redirectUrl;
-
-          } else {
-            toast.error(data.message, {
-              position: "top-right",
-              autoClose: 5000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "colored",
-            });
-          }
-        } else {
-          toast.error("Complete Your profile first", {
-            position: "top-right",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "colored",
-          });
-        }
+      if (response.status === 200) {
+        toast.success(data.message, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+        window.location.href = data.session.redirectUrl;
+      } else {
+        toast.error(data.message, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
       }
-  
-  
+    } else {
+      toast.error("Complete Your profile first", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+    }
+  }
+
   return (
     <>
       <DashboardDrawer />
@@ -295,18 +292,27 @@ setToken(token)
         />
         <nav className="w-full z-20 shadow-sm bg-[#0000001a]">
           <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-            <div>
-              <h1 className="text-xl text-[#000000] font-normal">Welcome!</h1>
+            <div className=" ">
+              <h1 className="text-xl text-[#000000] font-normal flex gap-4">
+                Welcome!{" "}
+                <span className=" font-bold text-[#4F378B]">
+                  {" "}
+                  {user?.firstName}
+                </span>
+              </h1>
             </div>
             <div className=" relative flex items-center md:order-2  md:space-x-0 rtl:space-x-reverse">
-              <a onClick={()=>router.push("/notifications")} className=" cursor-pointerbg-[#4F378B1A] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg  text-xs  py-2 text-center">
+              <a
+                onClick={() => router.push("/notifications")}
+                className=" cursor-pointerbg-[#4F378B1A] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg  text-xs  py-2 text-center">
                 <i
-                  className="fa-regular fa-bell fa-xl cursor-pointer "
+                  className="fa-regular fa-bell fa-xl cursor-pointer  "
                   style={{ color: "red" }}></i>
               </a>
-              <span className=" rounded-full absolute top-0  left-2   flex justify-center  items-center flex-col">
+              <span className=" font-bold  absolute top-0  left-4   rounded-badge bottom-4   flex justify-center  items-center flex-col">
                 {" "}
-                {notifications && notifications.length}
+             
+                {notifications && notifications.length} 
               </span>
               <div
                 data-collapse-toggle="navbar-sticky"

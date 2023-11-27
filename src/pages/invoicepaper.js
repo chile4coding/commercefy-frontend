@@ -18,6 +18,9 @@ export default function Invoicepaper() {
         router.push("/payment-link")
     }
 
+    function prinInvoice(){
+      window.print()
+    }
   return (
     <Applayout>
       <div class="flex items-center justify-center ">
@@ -30,9 +33,16 @@ export default function Invoicepaper() {
               Go back
             </a>
           </div>
-          <div class="bg-[#fefefe] p-5 mt-10 rounded-md">
+          <div class="bg-[#fefefe] p-5  rounded-md">
             <div>
-              <h1>Generated From:</h1>
+              <div className=" flex justify-between items-center">
+                <h1>Generated From:</h1>
+                <button
+                  onClick={prinInvoice}
+                  className=" btn btn-sm bg-[#4F378B] hover:bg-[#4F378B] text-white">
+                  print
+                </button>
+              </div>
               <p class="font-semibold">COMMERCEFY</p>
             </div>
             <div>
