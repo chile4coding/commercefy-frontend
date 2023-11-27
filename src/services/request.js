@@ -294,6 +294,24 @@ const  data  = await response.json()
     console.error(error);
     return error;
   }}
+export async function geNotifications(token) {
+  console.log(token)
+  try {
+    const response = await fetch(`${base_url}/get_notifications`, {
+      method: "GET",
+
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    
+const  data  = await response.json()
+    return data;
+  } catch (error) {
+    console.error(error);
+    return error;
+  }}
   
 export async function businessTransactions(token) {
     

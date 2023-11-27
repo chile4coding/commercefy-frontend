@@ -2,12 +2,13 @@ import React, { useEffect, useState } from "react";
 import Header from "../header";
 import ActiveLink from "./ActiveLink";
 import LoginHeader from "../LoginHeader";
-import { getCookie, socket } from "@/services/request";
+import { geNotifications, getCookie, socket } from "@/services/request";
 import Link from "next/link";
 import { ToastContainer, toast } from "react-toastify";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { getNotification } from "@/redux/storeSlice";
+
 export default function Applayout({ children }) {
   const [token, setToken] = useState(null);
   const { user, transactionFilter, transactions } = useSelector(
@@ -26,13 +27,20 @@ const dispatch  =  useDispatch()
       setRoute(true);
     }
 
-    socket.on(`${user?.id}transferNotification`, (message) => {
+    async function getNotice(){
+       const data = await geNotifications(token);
+       console.log("this is from notification db", data)
+    }
+    socket.on(`${user?.id}transferNotification`, async (message) => {
+     await getNotice()
       dispatch(getNotification(message));
     });
     socket.on(`${user?.id}client`, (message) => {
+      getNotice()
       dispatch(getNotification(message));
     });
     socket.on(`${user?.id}kyc`, (message) => {
+      getNotice()
       dispatch(getNotification(message));
     });
 

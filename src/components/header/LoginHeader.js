@@ -182,8 +182,8 @@ function DashboardDrawer() {
             {!user?.KYC && (
               <span
                 onClick={kyc}
-                className="block py-2 px-3 lg:text-black text-[#ffffff]">
-                <GoArrowUpRight />
+                className="flex cursor-pointer   items-center gap-2 py-2 px-3 lg:text-black text-[#ffffff]">
+                <GoArrowUpRight  className=" font-bold text-lg"/>
                 Complete KYC
               </span>
             )}
