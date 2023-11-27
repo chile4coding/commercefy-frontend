@@ -129,7 +129,10 @@ function NavNext(e){
        
         })
       );
-      router.push("/summary")
+      if(currentClient){
+        router.push("/summary")
+
+      }
   
     }
 

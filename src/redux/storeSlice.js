@@ -37,6 +37,9 @@ const storeSlice = createSlice({
       state.currentClient = searchClient;
       // state.currentClient = clientId
     },
+    initCurrentClient:(state, action)=>{
+state.currentClient = action.payload
+    },
     setCurrentInvoice: (state, action) => {
       state.currentIvoice = action.payload;
     },
@@ -99,6 +102,7 @@ export const {
   setCurrentClient,
   setCurrentInvoice,
   setGenereatedInvoices,
+  initCurrentClient,
   getInvoice,
   getWithdrawal,
   getOwnerClients,

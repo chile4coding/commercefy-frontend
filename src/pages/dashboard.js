@@ -116,7 +116,7 @@ function Transactions({ transactions }) {
 
 export default function Dashbooard() {
   const [show, setShow] = useState(true);
-  const { user, transactionFilter, transactions } = useSelector(
+  const { user, transactionFilter, transactions, notifications } = useSelector(
     (state) => state.store
   );
 
@@ -158,23 +158,24 @@ export default function Dashbooard() {
       }
     }
 
-    socket.on(`${user?.id}`, getUserDetails );
+    getUserDetails();
+
     socket.on(`${user?.id}transferNotification`, (message) => {
-      dispatch(getNotification(message.notification));
-      console.log(message);
-      getUserDetails();
+      dispatch(getNotification(message));
     });
-    socket.on(`${user?.id}invoicemessage`, (message) => {
-      console.log(message)
-      dispatch(getNotification(message.notification));
-      getUserDetails();
+    socket.on(`${user?.id}client`, (message) => {
+      dispatch(getNotification(message));
+    });
+    socket.on(`${user?.id}kyc`, (message) => {
+      dispatch(getNotification(message));
     });
 
     return () => {
-      socket.off(`${user?.id}`);
       socket.off(`${user?.id}transferNotification`);
+      socket.off(`${user?.id}client`);
+      socket.off(`${user?.id}kyc`);
     };
-  }, []);
+  }, [notifications]);
 
   function toggleBalance() {
     setShowBalance((prev) => !prev);
@@ -200,6 +201,9 @@ export default function Dashbooard() {
       dispatch(filterTransaction("withdrawal"));
     }
   }
+
+
+ 
 
   return (
     <Applayout>
@@ -263,13 +267,13 @@ export default function Dashbooard() {
             </div>
           </div>
           <div className="flex mb-4 mt-10 p-0">
-            {name.map((item) => (
+            {name?.map((item) => (
               <span
-                key={item.id}
+                key={item?.id}
                 className={` cursor-pointer w-1/2 py-2 text-[#252525] text-center hover:bg-[#4F378B1A] lg:text-base text-sm font-medium ${
-                  item.active ? "bg-[#e7e6e6]" : ""
+                  item?.active ? "bg-[#e7e6e6]" : ""
                 }`}
-                onClick={handleFilter.bind(this, item.id)}>
+                onClick={handleFilter.bind(this, item?.id)}>
                 {item.name}
               </span>
             ))}
@@ -292,3 +296,4 @@ export default function Dashbooard() {
     </Applayout>
   );
 }
+

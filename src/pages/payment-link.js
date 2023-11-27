@@ -26,7 +26,9 @@ function copyToClipboard(text) {
       console.error("Failed to copy text to clipboard:", error);
     });
 
-    setCopy(false)
+    setTimeout(() => {
+      setCopy(false)
+    }, 3000);
 }
 
 function  openWhatsapp(){
@@ -52,10 +54,10 @@ function NavBack(){
   return (
     <Applayout>
       <div className="flex items-center justify-center ">
-        <div className="w-full max-w-md">
+        <div className="w-full max-w-md mt-8">
           <div className="max-w-md mx-auto  lg:p-0 p-3 text-right">
-            <span onClick={()=>router.back()}>
-              <span onClick={()=>router.back()}
+            <span className=' cursor-pointer' onClick={()=>router.back()}>
+              <span 
                 className="fa-solid fa-chevron-left fa-sm"
                 style={{ color: " #000000" }}></span>{" "}
               Go back
@@ -88,7 +90,7 @@ function NavBack(){
           <div className="flex justify-center mt-5">
             <span
               onClick={copyToClipboard.bind(this, generatedInvoice.paymentLink)}
-              className="text-[#252525]">
+              className="  cursor-pointer text-[#252525]">
               <i
                 className="fa-solid fa-link fa-xs"
                 style={{ color: " #252525" }}></i>{" "}

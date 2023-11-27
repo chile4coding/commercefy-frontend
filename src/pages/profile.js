@@ -5,6 +5,7 @@ import { doKYC, getCookie, updateProfile } from "@/services/request";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { ToastContainer, toast } from "react-toastify";
 
 function ProfileDetails({ shownext }) {
   const router = useRouter();
@@ -20,7 +21,7 @@ function ProfileDetails({ shownext }) {
     const { user } = useSelector((state) => state.store);
 
     useEffect(()=>{
-if(user.firstName && user.lastName){
+if(user?.firstName && user?.lastName){
   setDetails({
     firstname: user.firstName,
     lastname: user.lastName,
@@ -43,6 +44,7 @@ if(user.firstName && user.lastName){
   return (
     <div>
       <div className="flex items-center justify-center ">
+     
         <div className="w-full max-w-md">
           <div className="max-w-md mx-auto lg:p-0 p-3 text-right">
             <span onClick={navBack}>
@@ -92,7 +94,6 @@ if(user.firstName && user.lastName){
                     type="text"
                     id="dateOfBirth"
                     onChange={handleInputChange}
-                  
                     value={details.lastname}
                     required
                     name="lastname"
@@ -232,10 +233,29 @@ if(user?.street ){
      }
      const response = await doKYC(details, token);
      const data = await response.json();
-
-  
      if (response.status === 200) {
-       console.log(data);
+              toast.success(data.message, {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+              });
+     
+     }else{
+         toast.error(data.message, {
+           position: "top-right",
+           autoClose: 5000,
+           hideProgressBar: false,
+           closeOnClick: true,
+           pauseOnHover: true,
+           draggable: true,
+           progress: undefined,
+           theme: "colored",
+         });
      }
    }
   const handleSubmit = async (event) => {
@@ -250,9 +270,20 @@ if(user?.street ){
     const data = await response.json();
 
     if (response.status === 200) {
+     toast.success(data.message, {
+       position: "top-right",
+       autoClose: 5000,
+       hideProgressBar: false,
+       closeOnClick: true,
+       pauseOnHover: true,
+       draggable: true,
+       progress: undefined,
+       theme: "colored",
+     });
+
       if (!data?.updateUser?.KYC){
         dispatch(setUser(data.findUser));
-         console.log(data);
+   
         const detail = {
           email: data?.updateUser?.email,
           firstname: data?.updateUser?.firstName,
@@ -266,6 +297,17 @@ if(user?.street ){
       } else{
         router.push("/businessprofile")
       }
+    }else{
+         toast.error(data.message, {
+           position: "top-right",
+           autoClose: 5000,
+           hideProgressBar: false,
+           closeOnClick: true,
+           pauseOnHover: true,
+           draggable: true,
+           progress: undefined,
+           theme: "colored",
+         });
     }
 
     setUserDetails({ ...userDetails, loading: false });
@@ -277,6 +319,18 @@ if(user?.street ){
 
   return (
     <div className="flex items-center justify-center ">
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+      />
       <div className="w-full max-w-md">
         <div className="max-w-md mx-auto lg:p-0 p-3 text-right">
           <span onClick={rollBack} className=" cursor-pointer">

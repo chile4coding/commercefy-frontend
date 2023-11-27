@@ -166,6 +166,8 @@ export async function  createPin(pin, token) {
     return error;
   }}
 export async function  withdrawalFund(detail, token) {
+
+  
     
     
   try {
@@ -192,6 +194,10 @@ export async function  withdrawalFund(detail, token) {
     if (token) {
       return token;
     }
+  }
+  export  function clearCookie() {
+    const token = Cookies.remove("_commercefy");
+  
   }
 export async function getUser(token) {
     
@@ -396,3 +402,7 @@ console.log(item)
 
 
   export const socket = io("https://commercefy-api.onrender.com");
+
+
+
+  

@@ -7,6 +7,8 @@ import React, { useState } from "react";
 import Cookies from "js-cookie";
 import { useDispatch } from "react-redux";
 import { setCurrentVisitor } from "@/redux/storeSlice";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import Link from "next/link";
 
 export default function signup() {
@@ -29,6 +31,16 @@ export default function signup() {
     e.preventDefault();
 
     if (reg.password !== reg.cPassword) {
+        toast.error("Password must match", {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
       setReg({ ...reg, checkPassword: true });
 
       return;
@@ -47,10 +59,31 @@ export default function signup() {
       const data = await response.json();
 
       if (response.status === 200) {
+            toast.success(data.message, {
+              position: "top-right",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "colored",
+            });
 
        dispatch(setCurrentVisitor(reg.email))
        
        router.push("/otp")
+      }else{
+           toast.error(data.message, {
+             position: "top-right",
+             autoClose: 5000,
+             hideProgressBar: false,
+             closeOnClick: true,
+             pauseOnHover: true,
+             draggable: true,
+             progress: undefined,
+             theme: "colored",
+           });
       }
     }
 
@@ -59,6 +92,18 @@ export default function signup() {
   return (
     <Applayout>
       <div className="flex items-center justify-center  ">
+        <ToastContainer
+          position="top-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="colored"
+        />
         <div className="w-full max-w-md">
           <div>
             <h1 className="uppercase font-bold text-center text-[#ffffff] ">

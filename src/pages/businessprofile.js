@@ -5,6 +5,7 @@ import { getBanks, getCookie, getUser, updatebusinessProfile } from "@/services/
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { ToastContainer, toast } from "react-toastify";
 function Business({shownext}) {
   const [details, setDetails] = useState({
     businessName: "",
@@ -261,15 +262,44 @@ const res = await updatebusinessProfile(detail, token)
 const data  = await res.json()
 
 if(res.status === 200){
+
+      toast.success(
+        `Dear ${user.firstName}, your business profile created successfully, you can manage your clients effieciently`,
+        {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        }
+      );
   const response  = await getUser(token)
    const data = await response.json();
 
      if (response.status === 200) {
+
+
+
+
        dispatch(setUser(data.owner));
        router.push("/dashboard")
 
      }
 
+}else{
+   toast.error(data.message, {
+     position: "top-right",
+     autoClose: 5000,
+     hideProgressBar: false,
+     closeOnClick: true,
+     pauseOnHover: true,
+     draggable: true,
+     progress: undefined,
+     theme: "colored",
+   });
 }
 setBankDetails({...bankDetails, loading:false})
 
@@ -280,6 +310,18 @@ setBankDetails({...bankDetails, loading:false})
 
   return (
     <div className="flex items-center justify-center ">
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+      />
       <div className="w-full max-w-md">
         <div className="max-w-md mx-auto  lg:p-0 p-3 text-right">
           <span className="cursor-pointer" onClick={showPrev}>
@@ -378,7 +420,7 @@ setBankDetails({...bankDetails, loading:false})
           </div>
           <div className="text-center mt-3 p-2">
             <button className="text-[#FEFEFE] bg-[#4F378B] cursor-pointer px-32 py-3 rounded-md">
-              Save {bankDetails.loading && <Spinner/> }
+              Save {bankDetails.loading && <Spinner />}
             </button>
           </div>
         </form>

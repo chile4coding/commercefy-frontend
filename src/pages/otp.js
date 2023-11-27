@@ -4,6 +4,7 @@ import { requestOTP, verifyOtp } from "@/services/request";
 import { useRouter } from "next/router";
 import React, { useRef, useState } from "react";
 import { useSelector } from "react-redux";
+import { ToastContainer, toast } from "react-toastify";
 
 export default function OTP() {
   const { visitor } = useSelector((state) => state.store);
@@ -55,9 +56,30 @@ export default function OTP() {
     console.log(data)
 
     if (response.status === 200) {
+            toast.success("OTP verified ✅", {
+              position: "top-right",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "colored",
+            });
   router.push("/login")
       
     } else {
+
+          toast.error(data.message, {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+          });
     
     }
 
@@ -76,16 +98,48 @@ export default function OTP() {
   async function resendOtp() {
     setResend((prev) => false);
     const response = await requestOTP(visitor);
+    const data  = await response.json()
     if (response.status === 200) {
-      setResend(prev=>true)
+            toast.success(data.message, {
+              position: "top-right",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "colored",
+            });
+      
     } else {
-      setResend((prev) => false);
+      toast.error(data.message, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
     }
   }
 
   return (
     <Applayout>
       <div className="flex items-center justify-center ">
+        <ToastContainer
+          position="top-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="colored"
+        />
         <div className="w-full max-w-md">
           <div className="bg-[#ffffff] px-5 py-10 rounded-md mt-5 shadow-sm">
             <div className="text-left">
@@ -103,7 +157,7 @@ export default function OTP() {
             </div>
             <div>
               <div className="mt-10">
-                <form>
+                <form onSubmit={handleSubmit}>
                   <div className="flex items-center justify-between">
                     {otp.map((digit, index) => (
                       <div className="mb-4">

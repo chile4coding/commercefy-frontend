@@ -5,6 +5,7 @@ import { createPin, getCookie, getUser, withdrawalFund } from "@/services/reques
 import { Router, useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { ToastContainer, toast } from "react-toastify";
 
 function CreatePin({ showAmount }) {
   const[pin, setPin] = useState({
@@ -125,11 +126,32 @@ export default function Withdraw() {
     const data = await res.json();
     console.log(data);
     if (res.status === 200) {
+             toast.success("Pin successfully create keep it safe", {
+               position: "top-center",
+               autoClose: 5000,
+               hideProgressBar: false,
+               closeOnClick: true,
+               pauseOnHover: true,
+               draggable: true,
+               progress: undefined,
+               theme: "colored",
+             });
       const response = await getUser(token);
       const data = await response.json();
       dispatch(setUser(data.owner));
 
       setShow(false);
+    }else{
+       toast.error(data.message, {
+         position: "top-right",
+         autoClose: 5000,
+         hideProgressBar: false,
+         closeOnClick: true,
+         pauseOnHover: true,
+         draggable: true,
+         progress: undefined,
+         theme: "colored",
+       });
     }
   }
 
@@ -142,6 +164,8 @@ export default function Withdraw() {
   async function withdrawFund(){
 
     const busines = user.business[0]
+
+    
     const detail = {
       name: `${user.firstName} ${user.lastName}`,
       pin: amountPin.pin,
@@ -149,18 +173,53 @@ export default function Withdraw() {
       recipient: busines.recipientBankId,
     };
 
-
+if(!detail.recipient){
+  toast.error("Please set up your business profile", {
+    position: "top-right",
+    autoClose: 5000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "colored",
+  });
+  return
+}
  setAmountPin({...amountPin, loading:true})
  const response = await withdrawalFund(detail, token)
  const data =  await response.json()
- setMessage(data.message)
+
  
  if(response.status === 200){
+
+        toast.success(`${detail.amount} successfully debitted from your business wallet` , {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+
   const res = await getUser(token);
   const data = await res.json();
   dispatch(setUser(data.owner));
   router.push("/dashboard")
   
+}else{
+      toast.error(data.message, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
 }
 setAmountPin({...amountPin, loading:false})
 
@@ -172,9 +231,21 @@ setAmountPin({...amountPin, loading:false})
 
   return (
     <Applayout>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+      />
       {!show && (
         <div class="max-w-md mx-auto mt-10 lg:p-0 p-3">
-        <h2 className=" text-center text-[#4F378B] font-bold">{message}</h2>
+          <h2 className=" text-center text-[#4F378B] font-bold"></h2>
           <h1 class="lg:text-2xl text-xl font-extrabold text-[#252525]">
             Transfer funds
           </h1>

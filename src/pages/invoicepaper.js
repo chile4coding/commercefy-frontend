@@ -1,12 +1,19 @@
 import Applayout from '@/components/header/layout/Applayout'
+import { getNotification } from '@/redux/storeSlice';
+import { socket } from '@/services/request';
 import { useRouter } from 'next/router';
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux';
 
 export default function Invoicepaper() {
       const { user, generatedInvoice } = useSelector((state) => state.store);
     const router  = useRouter()
 
+    useEffect(()=>{
+  socket.on(`${user?.id}transferNotification`, (message) => {
+    dispatch(getNotification(message.notification));
+  });
+    }, [socket])
     function handleNexNav(){
         router.push("/payment-link")
     }
@@ -15,7 +22,7 @@ export default function Invoicepaper() {
     <Applayout>
       <div class="flex items-center justify-center ">
         <div class="w-full max-w-md">
-          <div class="max-w-md mx-auto -mt-40 lg:p-0 p-3 text-right">
+          <div class="max-w-md mx-auto   lg:p-0 p-3 text-right">
             <a href="/generate invoice.html">
               <i
                 class="fa-solid fa-chevron-left fa-sm"
