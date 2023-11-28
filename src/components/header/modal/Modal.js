@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Spinner from "../spinner/Spinner";
 import { createClient, getCookie, getUser, socket } from "@/services/request";
-import { getNotification, setUser } from "@/redux/storeSlice";
+import { getNotification, setCurrentClient, setUser } from "@/redux/storeSlice";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -15,7 +15,7 @@ export default function Modal() {
     address: "",
     loading:false
   });
-    const { user } = useSelector((state) => state.store);
+    const { user, currentClient } = useSelector((state) => state.store);
 
 
 
@@ -48,17 +48,19 @@ setMessage("");
     const data  = await response.json()
 
     setMessage(data.message)
+    const res = await getUser(token);
+    const dat = await res.json();
+
+    console.log(dat)
 
     if(response.status === 200){
 
-         const res = await getUser(token);
-         const dat = await res.json();
 
   
          dispatch(setUser(dat.owner));
 
          setClient({...client, name:"", email:"", phone:"", address:""})
-      console.log(dat)
+     
       
     }
 
@@ -66,6 +68,8 @@ setMessage("");
 
     setClient({ ...client, loading: false });
   }
+
+
   return (
     <>
       {/* Open the modal using document.getElementById('ID').showModal() method */}

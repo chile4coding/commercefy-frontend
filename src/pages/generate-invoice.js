@@ -6,24 +6,35 @@ import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
 import { generateInvoice, getCookie } from '@/services/request';
-import { setCurrentClient, setCurrentInvoice } from '@/redux/storeSlice';
+import { initCurrentClient, setCurrentClient, setCurrentInvoice } from '@/redux/storeSlice';
 
 export default function GenerateInvoice() {
     const { user, currentClient } = useSelector((state) => state.store);
     const [client, setClient] = useState({
   
-      clientId: currentClient?.id,
-      email: currentClient?.email,
+      clientId:"",
+      email: "",
       amount: "",
-      name: currentClient?.name,
-      phone: currentClient?.phone,
-      address: currentClient?.address,
+      name: "",
+      phone: "",
+      address:"",
       subTotal: "",
       dateDue:"",
       discount: "0",
       tax: "0",
       item: [],
     });
+    useEffect(()=>{
+
+      setClient({
+        ...client,
+        email: currentClient?.email,
+        clientId: currentClient?.id,
+        name: currentClient?.name,
+        phone: currentClient?.phone,
+        address: currentClient?.address,
+      });
+    },[currentClient])
     
     const [loading, setLoading] =  useState(false)
     const  [item, setItem] = useState({
@@ -39,6 +50,8 @@ export default function GenerateInvoice() {
       setItem({ ...item, [name]: value });
     }
 
+ 
+
     const  [token, setToken] = useState(null)
 
     const dispatch  = useDispatch()
@@ -48,6 +61,7 @@ const token  = getCookie()
 if(token){
   setToken(token)
 }
+// dispatch(initCurrentClient([]));
     },[])
 
     function handleInputChange(e) {
@@ -62,6 +76,8 @@ if(token){
        
          setClient({ ...client, [name]: value });
     }
+
+
 
 
 function handleQtyIncrease(){
@@ -109,6 +125,7 @@ function additem(){
   
   
 }
+console.log(client)
 
 function NavNext(e){
   e.preventDefault();
