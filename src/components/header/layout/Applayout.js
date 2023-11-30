@@ -2,12 +2,23 @@ import React, { useEffect, useState } from "react";
 import Header from "../header";
 import ActiveLink from "./ActiveLink";
 import LoginHeader from "../LoginHeader";
-import { geNotifications, getCookie, socket } from "@/services/request";
+import {
+  businessTransactions,
+  geNotifications,
+  getCookie,
+  getUser,
+  socket,
+} from "@/services/request";
 import Link from "next/link";
 import { ToastContainer, toast } from "react-toastify";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
-import { getNotification } from "@/redux/storeSlice";
+import {
+  allTransaction,
+  getNotification,
+  getTransactions,
+  setUser,
+} from "@/redux/storeSlice";
 
 export default function Applayout({ children }) {
   const [token, setToken] = useState(null);
@@ -15,9 +26,9 @@ export default function Applayout({ children }) {
     (state) => state.store
   );
 
-  const [checkRoute, setRoute  ] = useState(null)
-const dispatch  =  useDispatch()
- 
+  const [checkRoute, setRoute] = useState(null);
+  const dispatch = useDispatch();
+
   const router = useRouter();
   useEffect(() => {
     const token = getCookie();
@@ -27,31 +38,37 @@ const dispatch  =  useDispatch()
       setRoute(true);
     }
 
-    async  function getNotifcationOnload(){
-const data = await geNotifications(token);
+    async function getNotifcationOnload() {
+      const data = await geNotifications(token);
 
-dispatch(getNotification(data?.notification));
+      dispatch(getNotification(data?.notification));
     }
 
+    getNotifcationOnload();
 
-    getNotifcationOnload()
+    async function getNotice() {
+      const data = await geNotifications(token);
+      dispatch(getNotification(data?.notification));
 
-    async function getNotice(){
-       const data = await geNotifications(token);
+      const dataT = await businessTransactions(token);
 
-       dispatch(getNotification(data?.notification));
-       
+      dispatch(getTransactions(dataT.transactions));
+      dispatch(allTransaction(dataT.transactions));
+
+      const response = await getUser(token);
+      const dataU = await response.json();
+      dispatch(setUser(dataU.owner));
     }
     socket.on(`${user?.id}transferNotification`, async (message) => {
-     await getNotice()
+      await getNotice();
       // dispatch(getNotification(message));
     });
     socket.on(`${user?.id}client`, (message) => {
-      getNotice()
+      getNotice();
       // dispatch(getNotification(message));
     });
     socket.on(`${user?.id}kyc`, (message) => {
-      getNotice()
+      getNotice();
       // dispatch(getNotification(message));
     });
 
@@ -75,7 +92,7 @@ dispatch(getNotification(data?.notification));
         theme: "colored",
       });
 
-      router.push("/dashboard")
+      router.push("/dashboard");
       return;
     }
 
@@ -83,22 +100,22 @@ dispatch(getNotification(data?.notification));
   }
 
   function clients() {
-     if (!user.KYC) {
-       toast.error("Complete your KYC ", {
-         position: "top-center",
-         autoClose: 5000,
-         hideProgressBar: false,
-         closeOnClick: true,
-         pauseOnHover: true,
-         draggable: true,
-         progress: undefined,
-         theme: "colored",
-       });
-  router.push("/dashboard");
-       return;
-     }
+    if (!user.KYC) {
+      toast.error("Complete your KYC ", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+      router.push("/dashboard");
+      return;
+    }
 
-     router.push("/clients");
+    router.push("/clients");
   }
   return (
     <main className="  flex flex-col">
